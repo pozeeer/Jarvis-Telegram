@@ -5,7 +5,7 @@ from telebot.types import Message
 from telebot import TeleBot, types
 import time
 import pyautogui as pag
-
+# from jarvis_telegram import main_exapmle
 from jarvis_telegram.markups.mouse_markups import select_mouse_option, select_distance, select_mouse_function
 
 scrolls_dict = {'down': -50, 'up': 50}
@@ -120,7 +120,10 @@ def mouse_move_to_down(message: Message, bot: TeleBot) -> None:
     mouse_move_to_somewhere(message, bot, y=25)
 
 
+
+
 handlers_mouse = {
+    r'(?i)Работа с мышкой': work_with_mouse,
     r'(?i)Зажатие ЛКМ на 5 секунд': enter_lkm_five_sec,
     r'(?i)Зажатие ПКМ на 5 секунд': enter_pkm_five_sec,
     r'(?i)Прокрутка вниз': choose_time_for_scroll_down,

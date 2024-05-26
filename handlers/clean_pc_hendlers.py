@@ -10,7 +10,7 @@ from languges import ERRORS
 
 
 # @bot.message_handler(regexp='Почисти пк от не нужных файлов')
-def echo_message(message: Message, bot: TeleBot):
+def clean_out_of_junk_files(message: Message, bot: TeleBot):
     markup = get_user_confirmation()
     bot.send_message(message.chat.id, 'Начинаю очистку. . .')
     try:
@@ -48,3 +48,5 @@ def clean_downloads(message: Message, bot: TeleBot):
     else:
         bot.send_message(message.chat.id, 'Жаль(', reply_markup=markup)
 
+
+clean_pc_handlers = {'Почисти пк от не нужных файлов':clean_out_of_junk_files}

@@ -16,3 +16,6 @@ def reboot_bot(message: Message, bot: TeleBot):
 def off_bot(message: Message, bot: TeleBot):
     bot.send_message(message.from_user.id, "Бот завершает рабо...")
     os._exit(0)
+
+
+work_with_bot_handlers = {r'(?i)Остановить бота': reboot_bot, r'(?i)Остановить бота': off_bot}

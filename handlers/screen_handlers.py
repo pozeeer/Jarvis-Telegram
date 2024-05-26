@@ -5,9 +5,13 @@ import re
 from PIL import ImageGrab
 from telebot.types import Message
 from telebot import TeleBot
-# from main import WindowMessage
+
 
 from languges import ERRORS
+
+from jarvis_telegram.markups.screen_handlers import *
+
+# bot = OwnBot(token='6929408227:AAFg7V3Qgu_86FQPmD3p5ifzvxvUInyJO84')
 
 
 # @bot.message_handler(regexp=r'(?i)Получить скриншот экрана')
@@ -69,7 +73,27 @@ def bright_up(message: Message, bot: TeleBot):
                          ERRORS['error_input'])
 
 
-display_handlers = {r'(?i)Получить скриншот экрана': screenshot,
+# @bot.message_handler(regexp='Работа с экраном')
+def work_with_screen(message: Message, bot: TeleBot):
+    # if not jarvis_func[1]:
+    #     bot.send_message(message.chat.id, 'Данный раздел не входит в функции подписки!')
+    #     return
+    # markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    # markup.add("Получить скриншот экрана", "Получить скриншот веб-камеры")
+    # markup.add('Яркость на максимум', 'Яркость на минимум')
+    # markup.add('Вернуться в главное меню')
+    markup = get_work_with_screen_markup()
+    bot.send_message(message.chat.id, 'Выберите, что хотите сделать!', reply_markup=markup)
+    # markup = InlineKeyboardMarkup()
+    # markup.add(InlineKeyboardButton(text='Яркость плюс (число)', switch_inline_query_current_chat="Яркость плюс "))
+    # markup.add(
+    #     InlineKeyboardButton(text='Яркость минус (число)', switch_inline_query_current_chat="Яркость минус "))
+    # markup.add(InlineKeyboardButton(text='Яркость на (число)', switch_inline_query_current_chat="Яркость на "))
+    inline_markup = get_inline_markup_work_with_bright()
+    bot.send_message(message.chat.id, 'Так же вы можете регулировать яркость', reply_markup=inline_markup)
+
+
+display_handlers = {r'(?i)Работа с экраном': work_with_screen, r'(?i)Получить скриншот экрана': screenshot,
                     r'(?i)Получить скриншот веб-камеры': screenshot_web_camera,
                     r'(?i)Яркость на максимум': bright_max, r'(?i)Яркость на минимум': bright_min,
                     'Яркость плюс': bright_plus, 'Яркость минус': bright_min, 'Яркость на': bright_up}

@@ -68,10 +68,11 @@ def play_video_stop(message: Message, bot: TeleBot):
 
 
 handlers_video = {
+    r'(?i)Работа с видео и фильмами': video_handlers_markup,
     r'(?i)Перемотать назад': rewind_back, r'(?i)Перемотать вперед': rewind_forward,
     r'(?i)Громкость': volume, r'(?i)Сделать погромче': volume_up,
     r'(?i)Сделать потише': volume_down, r'(?i)Отключить/Включить звук': volume_off_on,
     r'(?i)Полноразмерное видео/Не полноразмерное видео': full_screen_on_full,
     r'(?i)Остановка/Запуск видео': play_video_stop,
-    r'(?i)Работа с видео и фильмами': video_handlers_markup
+
 }

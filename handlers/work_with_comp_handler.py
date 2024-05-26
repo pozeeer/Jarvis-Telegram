@@ -19,11 +19,12 @@ import GPUtil
 
 from jarvis_telegram.markups.work_with_pc_markups import get_work_with_pc_markups, get_turn_off_markup, \
     get_tun_off_timer_markup, get_warning_markup, get_monitoring_markup
+from jarvis_telegram.utils.system_characteristics import ComputerCharacteristics
 from languges import JARVIS, info_message
 
 tok = "030449853c61a3cb7d9c32c14561db39"
 token = '6929408227:AAFg7V3Qgu_86FQPmD3p5ifzvxvUInyJO84'
-bot_1 = TeleBot(token=token)
+# bot_1 = TeleBot(token=token)
 
 
 # @bot.message_handler(regexp='работа с пк')
@@ -59,6 +60,7 @@ def set_desktop_wallpaper(message: Message, bot: TeleBot):
         bot.send_message(message.chat.id, text='Успешно')
     except TypeError as e:
         bot.send_message(message.chat.id, 'Это не похоже на картинку')
+
 
 def close_all_windows(message: Message, bot: TeleBot):
     keyboard.send('Windows+d')
@@ -165,34 +167,15 @@ def say_voice(message: Message, bot: TeleBot):
     bot.register_next_step_handler(message_for_user, sound_on_pc, bot)
 
 
-def get_system_info():
-    computer = wmi.WMI()
-    computer_info = computer.Win32_ComputerSystem()[0]
-    os_info = computer.Win32_OperatingSystem()[0]
-    proc_info = computer.Win32_Processor()[0]
-    system_info = (computer_info, os_info, proc_info)
-    return system_info
-
-
-def get_amount_ram():
-    info_ram = (str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB")
-    return info_ram
-
-
-system = platform.system()
-version = platform.version()
-proc_info = get_system_info()[2].Name.rstrip()
-name_videocard = GPUtil.getGPUs()[0].name
-amount_ram = get_amount_ram()
-
-
+# @bot.message_handler(regexp=r'(?i)Комплектующие')
 def characteristics(message: Message, bot: TeleBot):
-    oper_system = f'Операционная система: {system}'
-    system_ver = f'Версия Операционной системы: {version}'
-    processor = f'Процессор: {proc_info}'
-    ram = f'Оперативная память: {amount_ram}'
-    videocard = f'Видеокарта: `{name_videocard}'
-    bot.send_message(message.chat.id, f"{oper_system}\n\n{system_ver}\n\n{processor}\n\n{ram}\n\n{videocard}")
+    computer = ComputerCharacteristics()
+    oper_system = f'Операционная система: {computer.get_operating_system()}'
+    system_ver = f'Версия Операционной системы: {computer.get_operating_system_version()}'
+    processor = f'Процессор: {computer.get_processor_name()}'
+    ram = f'Оперативная память: {computer.get_ram_memory()}'
+    video_card = f'Видеокарта: `{computer.get_name_video_card()}'
+    bot.send_message(message.chat.id, f"{oper_system}\n\n{system_ver}\n\n{processor}\n\n{ram}\n\n{video_card}")
 
 
 def system_condition(message: Message, bot: TeleBot):

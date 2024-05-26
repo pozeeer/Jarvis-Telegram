@@ -6,19 +6,19 @@ from languges import JARVIS, ERRORS
 
 
 # @bot.message_handler(regexp='Jarvis Ai')
-def echo_message(message: Message, bot: TeleBot):
+def get_question_for_ai(message: Message, bot: TeleBot):
     # if not jarvis_func[12]:
     #     bot.send_message(message.chat.id, 'Данный раздел не входит в функции подписки!')
     #     return
-    x = bot.send_message(message.chat.id,
-                         JARVIS['question_jarvis_ai'])
-    bot.register_next_step_handler(x, Gpt)
+    message_for_user = bot.send_message(message.chat.id,
+                                        JARVIS['question_jarvis_ai'])
+    bot.register_next_step_handler(message_for_user, tolk_to_jarvis_ai, bot)
 
 
 messageGPT = []
 
 
-def Gpt(message: Message, bot: TeleBot):
+def tolk_to_jarvis_ai(message: Message, bot: TeleBot):
     global messageGPTWork
     global messageGPT
     if message.text == 'Стоп' or message.text == 'стоп':
@@ -51,3 +51,6 @@ def Gpt(message: Message, bot: TeleBot):
         except Exception as e:
             bot.send_message(message.chat.id,
                              ERRORS['errors_gpt'] + str(e))
+
+
+jarvis_ai_handlers = {r'(?i)Jarvis Ai': tolk_to_jarvis_ai}
